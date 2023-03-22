@@ -2,7 +2,8 @@ include make.inc
 
 SOURCES=eosmodule.F90 readtable.F90 nuc_eos.F90 bisection.F90 findtemp.F90 \
 	linterp_many.F90 constant_entropy.F90 constant_temperature.F90 \
-	derivatives.F90 polytrope.F90 hybrid.F90 findrho.F90 beta_equil.F90
+	derivatives.F90 polytrope.F90 hybrid.F90 findrho.F90 beta_equil.F90 \
+	derivatives_newtonian.F90 constant_temperature_newtonian.F90	
 FSOURCES=linterp.f
 
 CLEANSTUFF=rm -rf *.o *.mod *.a

@@ -55,7 +55,7 @@ subroutine findrho_press(lr0,lt,y,lpressin,keyerrr,tol)
      !d1 is the derivative dlpress/dlogrho, use to guess hopefully better rho
 !     write(*,*) i,lr,d1,lpressin-lpress_of_guess
      ldr= (lpressin-lpress_of_guess)/d1 
-     if (abs(ldr).gt.5.0d0) then
+     if (abs(ldr).gt.5.0d0.and.i.gt.10) then
         write(*,*) i,ldr,d1,lr,lr_new
         keyerrr = 473
         write(*,*) "dpdrho very small"

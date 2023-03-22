@@ -19,7 +19,7 @@
    real*8 fixed_ye
    real*8 TOVgamma
    real*8 K1
-   logical temp, poly,hybrid,betaequilEOS
+   logical temp, poly,hybrid,betaequilEOS,newt
    real*8 phi_bound, alpha_c
    real*8,save :: c = 29979245800.0d0
    real*8,save :: G = 6.67384d-8
@@ -31,13 +31,14 @@
    integer :: keytemp = 1
    integer :: keyerr = 0
    
-   call readtable("../../EOS/SFHo.h5",1)
+   call readtable("./path/to/EOS.h5",1)
 
    !individual TOV star parameters
    dr =500.0d0
    N = 20000
    entropy = 1.0d0
-   temperature = 0.1d0   
+   temperature = 0.1d0
+   newt = .false. !for newtonian TOV, only available for constant temp
    temp = .true. !set to false to fix entropy (be warned of EOS errors)
    betaequilEOS = .false. !i.e. P(rho) file
    fixed_ye = -0.05d0 !make negative for beta equilibrium
@@ -71,8 +72,13 @@
         write(*,"(1P20E18.8)") central_density/1.0d15,out_mass/1.98892d33,out_bmass/1.98892d33,out_radius
      endif
      if (temp) then
-        call mass_constant_temperature(central_density,temperature, &
-             out_mass_bary,phi,out_radius,out_pradius,N,dr,fixed_ye)
+        if (newt) then
+           call mass_constant_temperature_newtonian(central_density,temperature, &
+                out_mass_bary,phi,out_radius,out_pradius,N,dr,fixed_ye)
+        else
+           call mass_constant_temperature(central_density,temperature, &
+                out_mass_bary,phi,out_radius,out_pradius,N,dr,fixed_ye)
+        endif
      else
         call mass_constant_entropy(central_density,entropy, &
             out_mass_bary,out_radius,out_pradius,N,dr,fixed_ye)
