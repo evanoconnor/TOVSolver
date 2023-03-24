@@ -100,9 +100,9 @@ subroutine mass_constant_temperature_newtonian(central_density,temperature, &
   !now do RK4 to get new values of press, mass and phi
   flag_return = 0
   do i=2,N
-     call dpdr_newtonian(TOVmass(i-1),TOVpressure(i-1),TOVrho(i-1),TOVrad(i-1),k1p)
+     call dpdr_newtonian(TOVmass(i-1),TOVrho(i-1),TOVrad(i-1),k1p)
      call dmdr_newtonian(TOVrho(i-1),TOVrad(i-1),k1m)
-     call dphidr_newtonian(TOVmass(i-1),TOVpressure(i-1),TOVrho(i-1),TOVrad(i-1),k1ph)
+     call dphidr_newtonian(TOVmass(i-1),TOVrad(i-1),k1ph)
 
      if (TOVpressure(i-1)+dr*0.5d0*k1p.lt.0.0d0) then
         out_mass(1) = TOVmass(i-1)
@@ -128,11 +128,9 @@ subroutine mass_constant_temperature_newtonian(central_density,temperature, &
         return
      endif
 
-     call dpdr_newtonian(TOVmass(i-1)+0.5d0*dr*k1m,TOVpressure(i-1)+0.5d0*dr*k1p, &
-          temp_rho,TOVrad(i-1)+0.5d0*dr,k2p)
+     call dpdr_newtonian(TOVmass(i-1)+0.5d0*dr*k1m,temp_rho,TOVrad(i-1)+0.5d0*dr,k2p)
      call dmdr_newtonian(temp_rho,TOVrad(i-1)+0.5d0*dr,k2m)
-     call dphidr_newtonian(TOVmass(i-1)+0.5d0*dr*k1m,TOVpressure(i-1)+0.5d0*dr*k1p, &
-          temp_rho,TOVrad(i-1)+0.5d0*dr,k2ph)
+     call dphidr_newtonian(TOVmass(i-1)+0.5d0*dr*k1m,TOVrad(i-1)+0.5d0*dr,k2ph)
 
      if (TOVpressure(i-1)+dr*0.5d0*k2p.lt.0.0d0) then
         out_mass(1) = TOVmass(i-1)
@@ -159,11 +157,9 @@ subroutine mass_constant_temperature_newtonian(central_density,temperature, &
         return
      endif
 
-     call dpdr_newtonian(TOVmass(i-1)+dr*0.5d0*k2m,TOVpressure(i-1)+dr*0.5d0*k2p, &
-          temp_rho,TOVrad(i-1)+0.5d0*dr,k3p)
+     call dpdr_newtonian(TOVmass(i-1)+dr*0.5d0*k2m,temp_rho,TOVrad(i-1)+0.5d0*dr,k3p)
      call dmdr_newtonian(temp_rho,TOVrad(i-1)+0.5d0*dr,k3m)
-     call dphidr_newtonian(TOVmass(i-1)+dr*0.5d0*k2m,TOVpressure(i-1)+dr*0.5d0*k2p, &
-          temp_rho,TOVrad(i-1)+0.5d0*dr,k3ph)
+     call dphidr_newtonian(TOVmass(i-1)+dr*0.5d0*k2m,TOVrad(i-1)+0.5d0*dr,k3ph)
 
      if (TOVpressure(i-1)+dr*k3p.lt.0.0d0) then
         out_mass(1) = TOVmass(i-1)
@@ -190,11 +186,9 @@ subroutine mass_constant_temperature_newtonian(central_density,temperature, &
         return
      endif
 
-     call dpdr_newtonian(TOVmass(i-1)+dr*k3m,TOVpressure(i-1)+dr*k3p, &
-          temp_rho,TOVrad(i-1)+dr,k4p)
+     call dpdr_newtonian(TOVmass(i-1)+dr*k3m,temp_rho,TOVrad(i-1)+dr,k4p)
      call dmdr_newtonian(temp_rho,TOVrad(i-1)+dr,k4m)
-     call dphidr_newtonian(TOVmass(i-1)+dr*k3m,TOVpressure(i-1)+dr*k3p, &
-          temp_rho,TOVrad(i-1)+dr,k4ph)
+     call dphidr_newtonian(TOVmass(i-1)+dr*k3m,TOVrad(i-1)+dr,k4ph)
 
      TOVpressure(i) = TOVpressure(i-1) + dr/6.0d0*(k1p + 2.0d0*k2p + &
           2.0d0*k3p + k4p)
