@@ -1,10 +1,10 @@
 !-*-f90-*-
-subroutine dpdr_newtonian(mass,press,rho,rad,xx)
+subroutine dpdr_newtonian(mass,rho,rad,xx)
 
   implicit none
 
   !inputs
-  real*8 mass,press,rho,rad
+  real*8 mass,rho,rad
 
   !outputs
   real*8 xx
@@ -20,12 +20,12 @@ subroutine dpdr_newtonian(mass,press,rho,rad,xx)
 
 end subroutine dpdr_newtonian
 
-subroutine dmdr_newtonian(press,rho,rad,xx)
+subroutine dmdr_newtonian(rho,rad,xx)
 
   implicit none
 
   !inputs
-  real*8 mass,press,rho,rad
+  real*8 mass,rho,rad
 
   !Output
   real*8 xx
@@ -37,18 +37,17 @@ subroutine dmdr_newtonian(press,rho,rad,xx)
 
 end subroutine dmdr_newtonian
 
-subroutine dphidr_newtonian(mass,press,rho,rad,xx)
+subroutine dphidr_newtonian(mass,rad,xx)
 
   implicit none
 
   !inputs
-  real*8 mass,press,rho,rad
+  real*8 mass,rad
 
   !outputs
   real*8 xx
   
   !internal
-  real*8 :: pi = 3.14159265d0
   real*8 :: G = 6.6742d-8
   
   xx = G*mass/rad**2
